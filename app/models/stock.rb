@@ -15,4 +15,9 @@ class Stock < ApplicationRecord
     end
   end
   # Class method that gonna retriev the price of the stock via our method parametr "ticker_symbol"
+  
+  def self.check_db(ticker_symbol)
+    where(ticker: ticker_symbol).first
+  end 
+
 end
