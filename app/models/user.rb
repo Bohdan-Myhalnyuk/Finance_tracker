@@ -5,19 +5,24 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-         
+
   def under_stock_limit?
     stocks.count < 10
-  end 
-  
+  end
+
   def stock_already_tracked?(ticker_symbol)
     stock = Stock.chech_db(ticker_symbol)
     return false unless stock
+
     stock.where(id: stock.id).exists?
-  end 
-  
-  
+  end
+
   def can_track_stock?(ticker_symbol)
     under_stock_limit? && !stock_already_tracked?(ticker_symbol)
+  end
+  
+  def full_name
+    return "#{first_name} #{second_name}" if first_name || second_name
+    "Anonymous"
   end 
 end
